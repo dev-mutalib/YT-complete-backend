@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import CreatePost from './pages/CreatePost';
 import Feed from './pages/Feed';
 
@@ -9,6 +14,15 @@ const App = () => {
       <Routes>
         <Route
           path='/'
+          element={
+            <Navigate
+              to='/feed'
+              replace
+            />
+          }
+        />
+        <Route
+          path='/feed'
           element={<Feed />}
         />
         <Route
