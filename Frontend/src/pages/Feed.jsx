@@ -7,6 +7,10 @@ const Feed = () => {
 
   useEffect(() => {
     const controller = new AbortController();
+    /**
+     * In react 18 useEffect is called twice in dev mode but once in production mode.
+     * So we use AbortController to cancel the previous request.
+     */
 
     axios.get('http://localhost:3000/posts').then((res) => {
       console.log(res.data);
@@ -14,6 +18,7 @@ const Feed = () => {
       setPosts(res.data.data || []);
     });
 
+    // cleanup function - This will run when the component unmounts
     return () => {
       controller.abort();
     };
