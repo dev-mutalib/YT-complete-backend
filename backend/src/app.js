@@ -1,12 +1,14 @@
 import express from 'express';
 import multer from 'multer';
 import uploadFile from './services/storage.service.js';
-import Post from './models/post.model.js'
+import Post from './models/post.model.js';
+import cors from 'cors';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -34,8 +36,8 @@ app.post('/create-post', upload.single('image'), async (req, res) => {
 
     const post = await Post.create({
       image: result.url,
-      caption: req.body.caption
-    })
+      caption: req.body.caption,
+    });
 
     return res.status(200).json({
       success: true,
@@ -52,23 +54,22 @@ app.post('/create-post', upload.single('image'), async (req, res) => {
   }
 });
 
-
 app.get('/posts', async (req, res) => {
   try {
-    const post = await Post.find()
+    const post = await Post.find();
     return res.status(200).json({
       success: true,
       message: "Post's fetched successfully",
-      data: post
-    })
+      data: post,
+    });
   } catch (error) {
-    console.error('Error fetching post: ', error.message)
+    console.error('Error fetching post: ', error.message);
     return res.status(500).json({
       success: false,
       message: 'Error Fetching Posts',
-      error: error.message
-    })
+      error: error.message,
+    });
   }
-})
+});
 
 export default app;
